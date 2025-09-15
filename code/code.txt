@@ -1,0 +1,44 @@
+#define POT A0  // this #define will take memory at run-time , not on compile time(better memory management)
+int led = 13;  
+int motor_pin = 6;
+void setup() 
+{
+   pinMode(led,OUTPUT);
+   pinMode(motor_pin,OUTPUT);
+   Serial.begin(9600);
+}
+
+
+void loop() 
+{
+  int a = analogRead(POT);
+  delay(100);
+  float volt = a*5;
+  volt/=1023;
+  float temp = (volt-0.5)*100;
+  Serial.print("temperature:");
+  Serial.println(temp); 
+
+  if(temp<=25)
+  { 
+     analogWrite(motor_pin,0);
+     digitalWrite(led,LOW);
+     Serial.print("Fan off");
+  }
+
+  if(temp>25 && temp<=30)
+  {
+    analogWrite(motor_pin,127);
+    digitalWrite(led,LOW);
+    Serial.print("Fan runs at 50% speed");
+  }
+
+  if(temp>30)
+  {
+    
+     analogWrite(motor_pin,255);
+     digitalWrite(led,HIGH);
+     Serial.print("Fan runs at 100% speed");
+  }
+
+}
